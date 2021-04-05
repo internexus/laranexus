@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use Laranexus\Commands\Create;
+use Laranexus\Commands\Start;
+use Laranexus\Commands\Down;
+use Laranexus\Laranexus;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$laranexus = new Laranexus();
+$laranexus->setWorkingDir(getcwd());
+
+$app = new Application();
+$app->add(new Down($laranexus));
+$app->add(new Start($laranexus));
+$app->add(new Create($laranexus));
+
+$app->run();

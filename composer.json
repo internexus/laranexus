@@ -1,0 +1,14 @@
+{
+    "name": "internexus/docker-php",
+    "type": "library",
+    "description": "A PHP CLI to run local Laravel projects on Docker.",
+    "require": {
+        "symfony/process": "^5.2",
+        "symfony/console": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laranexus\\": "src/"
+        }
+    }
+}
