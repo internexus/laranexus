@@ -2,14 +2,24 @@
 
 namespace Laranexus\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
+
 class Create extends Command
 {
     /**
-     * Command name.
+     * Command description.
      *
      * @var string
      */
-    protected static $defaultName = 'create';
+    protected $description = 'Create a new Laravel project';
+
+    /**
+     * Setup command.
+     */
+    protected function setArgs()
+    {
+        $this->addArgument('name', InputArgument::REQUIRED, 'Project name');
+    }
 
     /**
      * Copy environment files.
@@ -18,16 +28,10 @@ class Create extends Command
      */
     protected function copyEnironmentFiles()
     {
-        $envPath = $this->laranexus->getWorkingDir('.env');
-
-        if (! file_exists($envPath)) {
-            file_put_contents(
-                $envPath,
-                $this->laranexus->getSnippet('.env.example')
-            );
-
-            $this->laranexus->artisan()->runCommand(['key:generate']);
-        }
+        file_put_contents(
+            $this->laranexus->getWorkingDir('.env'),
+            $this->laranexus->getSnippet('.env.example')
+        );
     }
 
     /**
@@ -38,9 +42,13 @@ class Create extends Command
     public function handle()
     {
         $this->info('Installing composer...');
-        $this->laranexus->composer()->install();
+        $this->laranexus->composer()->create($this->input->getArgument('name'));
+        $this->laranexus->setWorkingDir($this->laranexus->getWorkingDir() . '/' . $this->input->getArgument('name'));
 
         $this->info('Setup env files...');
         $this->copyEnironmentFiles();
+
+        // Check installation
+        return $this->laranexus->artisan()->command(['--version']);
     }
 }

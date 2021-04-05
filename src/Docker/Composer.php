@@ -5,6 +5,17 @@ namespace Laranexus\Docker;
 class Composer extends Docker
 {
     /**
+     * Create composer project.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    public function create($path)
+    {
+        return $this->run('composer', ['create-project', 'laravel/laravel', $path]);
+    }
+
+    /**
      * Install all composer packages.
      *
      * @return string

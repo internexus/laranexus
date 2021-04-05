@@ -7,6 +7,13 @@ use Symfony\Component\Process\Process;
 class Docker
 {
     /**
+     * Show docker-compose outputs.
+     *
+     * @var boolean
+     */
+    protected $debug;
+
+    /**
      * Docker Compose binary path.
      *
      * @var string
@@ -31,9 +38,11 @@ class Docker
      * Constructor.
      *
      * @param  string  $workingDir
+     * @param  boolean $debug
      */
-    public function __construct($workingDir)
+    public function __construct($workingDir, $debug = true)
     {
+        $this->debug = $debug;
         $this->workingDir = $workingDir;
         $this->composeFile = __DIR__ . '/../docker-compose.yml';
     }
@@ -78,6 +87,8 @@ class Docker
     {
         $base = [
             'run',
+            '--user',
+            getmyuid() . ':' . getmygid() ,
             '-v',
             "{$this->workingDir}:/app",
             '--rm',
@@ -103,17 +114,21 @@ class Docker
             $this->composeFile
         ];
 
-        $cwd = $this->workingDir;
         $env = [
             'WORKING_DIR' => $this->workingDir,
             'VOLUME_PREFIX' => 'laranexus',
         ];
 
-        $process = new Process(array_merge($docker, $args), $cwd, $env);
+        $process = new Process(array_merge($docker, $args), null, $env);
+
+        // @todo: only on `up` calls the timeout must be null
         $process->setTimeout(null);
         $process->setIdleTimeout(null);
-        $process->run(function($a, $b) {
-            echo $b;
+
+        $process->run(function($a, $output) {
+            if ($this->debug) {
+                echo $output;
+            }
         });
 
         if (! $process->isSuccessful()) {

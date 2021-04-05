@@ -5,11 +5,11 @@ namespace Laranexus\Commands;
 class Down extends Command
 {
     /**
-     * Command name.
+     * Command description.
      *
-     * @var  string
+     * @var string
      */
-    protected static $defaultName = 'down';
+    protected $description = 'Stops and remove all container';
 
     /**
      * Handle down command.

@@ -1,12 +1,28 @@
 # Laranexus
-
+A PHP CLI to run local Laravel projects on Docker.
+## Install
+```
+curl -O .../laranexus.phar
+```
 
 ```
-laranexus create myapp .
+chmod +x laranexus.phar
+sudo mv laranexus.phar /usr/local/bin/laranexus
+```
+## Create new project
+```
+laranexus create my-project
+```
+
+## Install
+To install a newly cloned repository:
+
+```
 laranexus install
-laranexus update
-laranexus start
-laranexus down
-laranexus artisan
-laranexus db
+```
+
+## Server
+Start nginx server
+```
+laranexus server
 ```

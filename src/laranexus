@@ -2,9 +2,15 @@
 <?php
 
 use Symfony\Component\Console\Application;
+use Laranexus\Commands\NpmInstall;
+use Laranexus\Commands\NpmRemove;
+use Laranexus\Commands\NpmRun;
+use Laranexus\Commands\Artisan;
+use Laranexus\Commands\Install;
 use Laranexus\Commands\Create;
-use Laranexus\Commands\Start;
+use Laranexus\Commands\Server;
 use Laranexus\Commands\Down;
+use Laranexus\Commands\Dev;
 use Laranexus\Laranexus;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -13,8 +19,14 @@ $laranexus = new Laranexus();
 $laranexus->setWorkingDir(getcwd());
 
 $app = new Application();
+$app->add(new Dev($laranexus));
 $app->add(new Down($laranexus));
-$app->add(new Start($laranexus));
+$app->add(new Server($laranexus));
 $app->add(new Create($laranexus));
+$app->add(new Install($laranexus));
+$app->add(new Artisan($laranexus));
+$app->add(new NpmRun($laranexus));
+$app->add(new NpmRemove($laranexus));
+$app->add(new NpmInstall($laranexus));
 
 $app->run();

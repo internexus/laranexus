@@ -10,7 +10,7 @@ class Artisan extends Docker
      * @param  array  $args
      * @return string
      */
-    public function runCommand($args)
+    public function command($args = [])
     {
         return $this->run('php', array_merge(['artisan'], $args));
     }

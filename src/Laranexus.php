@@ -2,10 +2,10 @@
 
 namespace Laranexus;
 
-use Exception;
-use Laranexus\Docker\Server;
-use Laranexus\Docker\Artisan;
 use Laranexus\Docker\Composer;
+use Laranexus\Docker\Artisan;
+use Laranexus\Docker\Server;
+use Laranexus\Docker\Npm;
 
 class Laranexus
 {
@@ -123,5 +123,15 @@ class Laranexus
     public function composer()
     {
         return new Composer($this->workingDir);
+    }
+
+    /**
+     * Get Docker 'npm' service instance.
+     *
+     * @return \Laranexus\Docker\Npm
+     */
+    public function npm()
+    {
+        return new Npm($this->workingDir);
     }
 }

@@ -29,6 +29,13 @@ class Command extends \Symfony\Component\Console\Command\Command
     protected $output;
 
     /**
+     * Command description.
+     *
+     * @var string
+     */
+    protected $description;
+
+    /**
      * Laranexus instance.
      *
      * @param \Laranexus\Laranexus  $laranexus
@@ -38,6 +45,29 @@ class Command extends \Symfony\Component\Console\Command\Command
         $this->laranexus = $laranexus;
 
         parent::__construct();
+    }
+
+    /**
+     * Setup command.
+     */
+    protected function configure()
+    {
+        $name = static::$defaultName;
+
+        if (empty($name)) {
+            $ns = explode('\\', get_class($this));
+            $name = strtolower($ns[count($ns) - 1]);
+        }
+
+        $this->setName($name)->setDescription($this->description ?? '')->setArgs();
+    }
+
+    /**
+     * Set arguments variables.
+     */
+    protected function setArgs()
+    {
+        //
     }
 
     /**
