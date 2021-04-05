@@ -44,7 +44,12 @@ class Docker
     {
         $this->debug = $debug;
         $this->workingDir = $workingDir;
-        $this->composeFile = __DIR__ . '/../docker-compose.yml';
+
+        if (\Phar::running()) {
+            $this->composeFile = $_SERVER['HOME'] . '/.laranexus/src/docker-compose.yml';
+        } else {
+            $this->composeFile = __DIR__ . '/../docker-compose.yml';
+        }
     }
 
     /**
