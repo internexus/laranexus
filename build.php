@@ -12,9 +12,11 @@ try {
     }
 
     $phar = new Phar($pharFile);
+    $defaultStub = $phar->createDefaultStub('src/laranexus', '/index.php');
+
     $phar->startBuffering();
     $phar->buildFromDirectory(__DIR__);
-    $phar->setDefaultStub('src/laranexus', '/index.php');
+    $phar->setStub("#!/usr/bin/env php\n" . $defaultStub);
     $phar->stopBuffering();
     $phar->compressFiles(Phar::GZ);
 

@@ -2,7 +2,7 @@
 A PHP CLI to run local Laravel projects on Docker.
 ## Install
 ```
-php -r "copy('https://raw.githubusercontent.com/internexus/laranexus/main/laranexus-setup.php');"
+php -r "copy('https://raw.githubusercontent.com/internexus/laranexus/main/laranexus-setup.php', 'laranexus-setup.php');"
 php laranexus-setup.php
 ```
 

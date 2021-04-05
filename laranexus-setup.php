@@ -10,4 +10,4 @@ if (! is_dir($homeDir)) {
 
 $phar = new Phar('laranexus.phar');
 $phar->extractTo($homeDir, 'src/docker-compose.yml', true);
-unlink('laranexus-seup.php');
+unlink('laranexus-setup.php');
