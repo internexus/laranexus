@@ -2,6 +2,8 @@
 
 namespace Laranexus\Commands;
 
+use Symfony\Component\Console\Input\InputOption;
+
 class Install extends Command
 {
     /**
@@ -10,6 +12,14 @@ class Install extends Command
      * @var string
      */
     protected $description = 'Install a exists Laravel project';
+
+    /**
+     * Setup command.
+     */
+    protected function setArgs()
+    {
+        $this->addOption('skip-composer', null, InputOption::VALUE_OPTIONAL, 'Skip Composer install', false);
+    }
 
     /**
      * Copy environment files.
@@ -37,8 +47,15 @@ class Install extends Command
      */
     public function handle()
     {
-        $this->info('Installing composer...');
-        $this->laranexus->composer()->install();
+        $skipComposer = $this->input->getOption('skip-composer');
+
+        if (null == $skipComposer || $skipComposer == false) {
+            $this->info('Installing composer...');
+            $this->laranexus->composer()->install();
+        }
+
+        chmod($this->laranexus->getWorkingDir('bootstrap/cache'), 0775);
+        chmod($this->laranexus->getWorkingDir('storage'), 0777);
 
         $this->info('Setup env files...');
         $this->copyEnironmentFiles();

@@ -27,3 +27,8 @@ Start nginx server
 ```
 laranexus server
 ```
+
+## Build phar
+```
+php --define phar.readonly=0 build.php
+```

@@ -2,6 +2,7 @@
 
 namespace Laranexus\Commands;
 
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 
 class Create extends Command
@@ -22,19 +23,6 @@ class Create extends Command
     }
 
     /**
-     * Copy environment files.
-     *
-     * @return void
-     */
-    protected function copyEnironmentFiles()
-    {
-        file_put_contents(
-            $this->laranexus->getWorkingDir('.env'),
-            $this->laranexus->getSnippet('.env.example')
-        );
-    }
-
-    /**
      * Handle create command.
      *
      * @return void
@@ -43,12 +31,11 @@ class Create extends Command
     {
         $this->info('Installing composer...');
         $this->laranexus->composer()->create($this->input->getArgument('name'));
-        $this->laranexus->setWorkingDir($this->laranexus->getWorkingDir() . '/' . $this->input->getArgument('name'));
+        $this->laranexus->setWorkingDir($this->laranexus->getWorkingDir($this->input->getArgument('name')));
 
-        $this->info('Setup env files...');
-        $this->copyEnironmentFiles();
+        unlink($this->laranexus->getWorkingDir('.env'));
 
-        // Check installation
-        return $this->laranexus->artisan()->command(['--version']);
+        $cmd = $this->getApplication()->find('install');
+        $cmd->run(new ArrayInput(['--skip-composer' => true]), $this->output);
     }
 }

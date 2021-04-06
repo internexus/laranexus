@@ -2,31 +2,27 @@
 <?php
 
 use Symfony\Component\Console\Application;
-use Laranexus\Commands\NpmInstall;
-use Laranexus\Commands\NpmRemove;
-use Laranexus\Commands\NpmRun;
-use Laranexus\Commands\Artisan;
-use Laranexus\Commands\Install;
-use Laranexus\Commands\Create;
-use Laranexus\Commands\Server;
-use Laranexus\Commands\Down;
-use Laranexus\Commands\Dev;
 use Laranexus\Laranexus;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $laranexus = new Laranexus();
 $laranexus->setWorkingDir(getcwd());
-
 $app = new Application();
-$app->add(new Dev($laranexus));
-$app->add(new Down($laranexus));
-$app->add(new Server($laranexus));
-$app->add(new Create($laranexus));
-$app->add(new Install($laranexus));
-$app->add(new Artisan($laranexus));
-$app->add(new NpmRun($laranexus));
-$app->add(new NpmRemove($laranexus));
-$app->add(new NpmInstall($laranexus));
+
+$kernel = [
+    \Laranexus\Commands\Composer::class,
+    \Laranexus\Commands\Artisan::class,
+    \Laranexus\Commands\Install::class,
+    \Laranexus\Commands\Create::class,
+    \Laranexus\Commands\Server::class,
+    \Laranexus\Commands\Down::class,
+    \Laranexus\Commands\Npm::class,
+    \Laranexus\Commands\Dev::class,
+];
+
+foreach ($kernel as $cmd) {
+    $app->add(new $cmd($laranexus));
+}
 
 $app->run();

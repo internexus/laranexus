@@ -40,7 +40,7 @@ class Docker
      * @param  string  $workingDir
      * @param  boolean $debug
      */
-    public function __construct($workingDir, $debug = true)
+    public function __construct($workingDir, $debug = false)
     {
         $this->debug = $debug;
         $this->workingDir = $workingDir;
@@ -71,7 +71,7 @@ class Docker
      * @param  string  $service
      * @return string
      */
-    protected function up($service)
+    public function up($service)
     {
         $args = [
             'up',
@@ -88,7 +88,7 @@ class Docker
      * @param  array   $args
      * @return string
      */
-    protected function run($service, $args)
+    public function run($service, $args)
     {
         $base = [
             'run',
